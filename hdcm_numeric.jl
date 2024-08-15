@@ -974,7 +974,7 @@ data_shaps5_interaction = @chain data_shaps5 begin
 end
 
 pl = AlgebraOfGraphics.data(data_shaps5_interaction)
-l1 = mapping(:feature_value => "Covariate value", :med => "SHAP effect on CL", layout=:feature_name, color = :ALB) * (smooth() + visual(Scatter))
+l1 = mapping(:feature_value => "Normalized weight", :med => "SHAP effect on CL", color = :ALB => "Normalized albumin") * (smooth() + visual(Scatter))
 #l2 = mapping(:feature_value => "Covariate value", :lo => "SHAP effect on CL", :hi, layout=:feature_name) * visual(Band, alpha=0.5, color=:lightblue)
 pl_shap_change_interaction = draw(pl * (l1))
 
