@@ -965,6 +965,20 @@ l2 = mapping(:feature_value => "Covariate value", :lo => "SHAP effect on CL", :h
 pl_shap_change = draw(pl * (l1 + l2))
 
 
+## covariate interaction plot
+
+data_shaps5_interaction_alb = select(@rsubset(data_shaps5, :feature_name == "ALB"), :index, :med => :ALB)
+data_shaps5_interaction = @chain data_shaps5 begin 
+    @rsubset(:feature_name == "WT")
+    leftjoin(data_shaps5_interaction_alb, on = :index)
+end
+
+pl = AlgebraOfGraphics.data(data_shaps5_interaction)
+l1 = mapping(:feature_value => "Covariate value", :med => "SHAP effect on CL", layout=:feature_name, color = :ALB) * (smooth() + visual(Scatter))
+#l2 = mapping(:feature_value => "Covariate value", :lo => "SHAP effect on CL", :hi, layout=:feature_name) * visual(Band, alpha=0.5, color=:lightblue)
+pl_shap_change_interaction = draw(pl * (l1))
+
+
 ###
 
 ## V2
@@ -1040,6 +1054,7 @@ save(joinpath(resDir, "shap_change.pdf"), pl_shap_change)
 save(joinpath(resDir, "shap_bar_v2.pdf"), pl_shap_bar_v2)
 save(joinpath(resDir, "shap_violin_v2.pdf"), pl_shap_violin_v2)
 save(joinpath(resDir, "shap_change_v2.pdf"), pl_shap_change_v2)
+save(joinpath(resDir, "shap_change_interaction.pdf"), pl_shap_change_interaction)
 
 
 ## everything
